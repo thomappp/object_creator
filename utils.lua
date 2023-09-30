@@ -47,12 +47,12 @@ RemoveObjectTable = function(objectId, objectObj)
     end
 end
 
-SetCoords = function(obj, x, y, z)
-    local coords = GetOffsetFromEntityInWorldCoords(obj, x, y, z)
-    SetEntityCoords(obj, coords)
+SetCoords = function(object, x, y, z)
+    local coords = GetOffsetFromEntityInWorldCoords(object, x, y, z)
+    SetEntityCoords(object, coords)
 end
 
-SetRotation = function(obj, x, y, z)
-    local rotation = GetEntityRotation(obj)
-    SetEntityRotation(obj, vector3(rotation.x + x, rotation.y + y, rotation.z + z))
+SetRotation = function(object, x, y, z)
+    local rotation = GetEntityRotation(object)
+    SetEntityRotation(object, vector3(rotation.x + x, rotation.y + y, rotation.z + z))
 end

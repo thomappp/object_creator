@@ -4,7 +4,7 @@ local EditObjectMenu = RageUI.CreateSubMenu(ObjectListMenu, "Création", "Editer
 local SelectedObject = nil
 local MarkerActive = false
 
-function RageUI.PoolMenus:Example()
+function RageUI.PoolMenus:CreatorMenu()
 	MainMenu:IsVisible(function(Items)
 		Items:AddButton("Ajouter un objet", "Ajouter un nouveau objet", { IsDisabled = false }, function(onSelected)
 			if (onSelected) then
