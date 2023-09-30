@@ -121,7 +121,6 @@ function RageUI.PoolMenus:CreatorMenu()
 					end
 				end
 			end, MainMenu)
-
 		else
 			Items:AddButton("~r~Assurez vous d'être assez proche de l'objet", nil, { IsDisabled = false }, function(onSelected)
 			end)
