@@ -6,7 +6,7 @@ local MarkerActive = false
 
 function RageUI.PoolMenus:CreatorMenu()
 	MainMenu:IsVisible(function(Items)
-		Items:AddButton("Ajouter un objet", "Ajouter un nouveau objet", { IsDisabled = false }, function(onSelected)
+		Items:AddButton("Ajouter un objet", "Ajouter un objet (/createobj)", { IsDisabled = false }, function(onSelected)
 			if (onSelected) then
 				local object = KeyboardInput("OBJECT_SPAWNER", "Nom de l'objet", "", 30)
 				CreateObjectWorld(object)
@@ -135,7 +135,7 @@ function RageUI.PoolMenus:CreatorMenu()
 	end)
 end
 
-Keys.Register("E", "E", "Menu création", function()
+Keys.Register("F10", "F10", "Menu création", function()
 	RageUI.Visible(MainMenu, not RageUI.Visible(MainMenu))
 end)
 
