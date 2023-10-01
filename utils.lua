@@ -1,6 +1,13 @@
 SpawnedObjects = {}
+ObjectCreator = {}
 
-KeyboardInput = function(entryTitle, textEntry, inputText, maxLength)
+ObjectCreator.ShowNotification = function(text)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawNotification(true, true)
+end
+
+ObjectCreator.KeyboardInput = function(entryTitle, textEntry, inputText, maxLength)
     AddTextEntry(entryTitle, textEntry)
     DisplayOnscreenKeyboard(1, entryTitle, "", inputText, "", "", "", maxLength)
 
@@ -21,7 +28,7 @@ KeyboardInput = function(entryTitle, textEntry, inputText, maxLength)
     end
 end
 
-CreateObjectWorld = function(object)
+ObjectCreator.CreateObjectWorld = function(object)
     local playerPed = PlayerPedId()
     local objectCoords = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
     local objectHeading = GetEntityHeading(playerPed)
@@ -36,23 +43,31 @@ CreateObjectWorld = function(object)
         }
         
         table.insert(SpawnedObjects, tbl)
+        ObjectCreator.ShowNotification(("Vous avez ajouté l'objet ~g~%s~s~."):format(object))
     end
 end
 
-RemoveObjectTable = function(objectId, objectObj)
+ObjectCreator.RemoveObjectTable = function(objectId, objectObj, objectName)
     for _, object in pairs(SpawnedObjects) do
         if _ == objectId and object.obj == objectObj then
             table.remove(SpawnedObjects, _)
+            ObjectCreator.ShowNotification(("Vous avez supprimé l'objet ~g~%s~s~."):format(objectName))
+            break;
         end
     end
 end
 
-SetCoords = function(object, x, y, z)
+ObjectCreator.SetCoords = function(object, x, y, z)
     local coords = GetOffsetFromEntityInWorldCoords(object, x, y, z)
     SetEntityCoords(object, coords)
 end
 
-SetRotation = function(object, x, y, z)
+ObjectCreator.SetRotation = function(object, x, y, z)
     local rotation = GetEntityRotation(object)
     SetEntityRotation(object, vector3(rotation.x + x, rotation.y + y, rotation.z + z))
 end
+
+RegisterNetEvent("object_creator:show_notification")
+AddEventHandler("object_creator:show_notification", function(text)
+    ObjectCreator.ShowNotification(text)
+end)

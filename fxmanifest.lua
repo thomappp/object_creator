@@ -14,3 +14,5 @@ client_scripts {
     'client.lua',
     'utils.lua'
 }
+
+server_script 'server.lua'

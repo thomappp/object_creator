@@ -8,8 +8,8 @@ function RageUI.PoolMenus:CreatorMenu()
 	MainMenu:IsVisible(function(Items)
 		Items:AddButton("Ajouter un objet", "Ajouter un objet (/createobj)", { IsDisabled = false }, function(onSelected)
 			if (onSelected) then
-				local object = KeyboardInput("OBJECT_SPAWNER", "Nom de l'objet", "", 30)
-				CreateObjectWorld(object)
+				local object = ObjectCreator.KeyboardInput("OBJECT_SPAWNER", "Nom de l'objet", "", 30)
+				ObjectCreator.CreateObjectWorld(object)
 			end
 		end)
 
@@ -41,6 +41,8 @@ function RageUI.PoolMenus:CreatorMenu()
 
 			Items:AddButton(("Nom - %s"):format(Object.name), nil, { IsDisabled = false }, function(onSelected)
 			end)
+            Items:AddButton(("Objet - %s"):format(Object.obj), nil, { IsDisabled = false }, function(onSelected)
+			end)
 
 			Items:AddSeparator("~y~Actions")
 
@@ -69,41 +71,41 @@ function RageUI.PoolMenus:CreatorMenu()
 
 			Items:AddButton("Coordonnées", "Utilisez 4, 5, 6, 8, - et + pour modifier les coordonnées", { Style = 1 }, function(onSelected)
 				if IsControlPressed(0, 108) then -- 4
-					SetCoords(Object.obj, -0.02, 0.0, 0.0)
+					ObjectCreator.SetCoords(Object.obj, -0.02, 0.0, 0.0)
 				elseif IsControlPressed(0, 109) then -- 6
-					SetCoords(Object.obj, 0.02, 0.0, 0.0)
+					ObjectCreator.SetCoords(Object.obj, 0.02, 0.0, 0.0)
 				end
 
 				if IsControlPressed(0, 110) then -- 5
-					SetCoords(Object.obj, 0.0, -0.02, 0.0)
+					ObjectCreator.SetCoords(Object.obj, 0.0, -0.02, 0.0)
 				elseif IsControlPressed(0, 111) then -- 8
-					SetCoords(Object.obj, 0.0, 0.02, 0.0)
+					ObjectCreator.SetCoords(Object.obj, 0.0, 0.02, 0.0)
 				end
 
 				if IsControlPressed(0, 315) then -- -
-					SetCoords(Object.obj, 0.0, 0.0, -0.02)
+					ObjectCreator.SetCoords(Object.obj, 0.0, 0.0, -0.02)
 				elseif IsControlPressed(0, 314) then -- +
-					SetCoords(Object.obj, 0.0, 0.0, 0.02)
+					ObjectCreator.SetCoords(Object.obj, 0.0, 0.0, 0.02)
 				end
 			end)
 
 			Items:AddButton("Rotation", "Utilisez 4, 5, 6, 8  et les fèches pour modifier la rotation", { Style = 1 }, function(onSelected)
 				if IsControlPressed(0, 111) then -- 8
-					SetRotation(Object.obj, -0.5, 0.0, 0.0)
+					ObjectCreator.SetRotation(Object.obj, -0.5, 0.0, 0.0)
 				elseif IsControlPressed(0, 110) then -- 5
-					SetRotation(Object.obj, 0.5, 0.0, 0.0)
+					ObjectCreator.SetRotation(Object.obj, 0.5, 0.0, 0.0)
 				end
 
 				if IsControlPressed(0, 108) then -- 4
-					SetRotation(Object.obj, 0.0, -0.5, 0.0)
+					ObjectCreator.SetRotation(Object.obj, 0.0, -0.5, 0.0)
 				elseif IsControlPressed(0, 109) then -- 6
-					SetRotation(Object.obj, 0.0, 0.5, 0.0)
+					ObjectCreator.SetRotation(Object.obj, 0.0, 0.5, 0.0)
 				end
 
 				if IsControlPressed(0, 174) then -- Left Arrow
-					SetRotation(Object.obj, 0.0, 0.0, -0.5)
+					ObjectCreator.SetRotation(Object.obj, 0.0, 0.0, -0.5)
 				elseif IsControlPressed(0, 175) then -- Right Arrow
-					SetRotation(Object.obj, 0.0, 0.0, 0.5)
+					ObjectCreator.SetRotation(Object.obj, 0.0, 0.0, 0.5)
 				end
 			end)
 
@@ -113,11 +115,24 @@ function RageUI.PoolMenus:CreatorMenu()
 				end
 			end)
 
+            Items:AddButton("Enregistrer", nil, { IsDisabled = false }, function(onSelected)
+				if (onSelected) then
+					local data = {
+                        name = Object.name,
+                        coords = GetEntityCoords(Object.obj),
+                        rotation = GetEntityRotation(Object.obj),
+                        freeze = IsEntityPositionFrozen(Object.obj) and true or false
+                    }
+
+                    TriggerServerEvent("object_creator:save_object", data)
+				end
+			end)
+
 			Items:AddButton("Supprimer", nil, { IsDisabled = false }, function(onSelected)
 				if (onSelected) then
 					if DoesEntityExist(Object.obj) then
 						DeleteObject(Object.obj)
-						RemoveObjectTable(SelectedObject, Object.obj)
+						ObjectCreator.RemoveObjectTable(SelectedObject, Object.obj, Object.name)
 					end
 				end
 			end, MainMenu)
@@ -142,6 +157,6 @@ end)
 RegisterCommand("createobj", function(source, args)
 	local object = args[1]
 	if object then
-		CreateObjectWorld(object)
+		ObjectCreator.CreateObjectWorld(object)
 	end
 end)
