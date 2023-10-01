@@ -41,7 +41,6 @@ function RageUI.PoolMenus:CreatorMenu()
 
 			Items:AddButton(("Nom - %s"):format(Object.name), nil, { IsDisabled = false }, function(onSelected)
 			end)
-        
             Items:AddButton(("Objet - %s"):format(Object.obj), nil, { IsDisabled = false }, function(onSelected)
 			end)
 
@@ -115,17 +114,16 @@ function RageUI.PoolMenus:CreatorMenu()
 					SetEntityRotation(Object.obj, vector3(0.0, 0.0, 0.0))
 				end
 			end)
-
-        
+            
             Items:AddButton("Enregistrer", nil, { IsDisabled = false }, function(onSelected)
 				if (onSelected) then
-					local data = {
+                    local data = {
                         name = Object.name,
                         coords = GetEntityCoords(Object.obj),
                         rotation = GetEntityRotation(Object.obj),
                         freeze = IsEntityPositionFrozen(Object.obj) and true or false
                     }
-                    
+
                     TriggerServerEvent("object_creator:save_object", data)
 				end
 			end)
